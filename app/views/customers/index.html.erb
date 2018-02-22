@@ -20,24 +20,46 @@
   <header>
     <h1 class="h3">Search Results</h1>
   </header>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <td>First Name</td>
-        <td>Last Name</td>
-        <td>Email</td>
-        <td>Joined</td>
-      </tr>
-    </thead>
-    <tbody>
-      <% @customers.each do |customer| %>
-        <tr>
-          <td><%= customer.first_name %></td>
-          <td><%= customer.last_name %></td>
-          <td><%= customer.email %></td>
-          <td><%= customer.created_at.to_date %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <nav>
+    <ul class="pager">
+      <li class="previous <%= @page == 0 ? 'disabled' : '' %>">
+        <%= link_to_if @page > 0, "&larr; Previous".html_safe,
+            customers_path(keywords: @keywords, page: @page - 1) %>
+      </li>
+      <li class="next">
+        <%= link_to "Next &rarr;".html_safe,
+            customers_path(keywords: @keywords, page: @page + 1) %>
+      </li>
+    </ul>
+  </nav>
+
+
+  <% render partial: "customers/pager", locals: { keywords: @keywords, page: @page } %>
+  <ol class="list-group">
+    <% @customers.each do |customer| %>
+    <li class="list-group-item clearfix" style="border-radius:5px; margin-bottom:10px;">
+      <h3 class="pull-right">
+        <small class="text-uppercase">Joined</small>
+        <%= l customer.created_at.to_date %>
+      </h3>
+      <h2><%= customer.first_name %> <%= customer.last_name %></h2>
+      <h4><%= customer.email %></h4>
+      <h5><%= customer.username %></h5>
+      </li>
+    <% end %>
+  </ol>
+  <% render partial: "customers/pager", locals: { keywords: @keywords, page: @page } %>
+
+  <nav>
+    <ul class="pager">
+      <li class="previous <%= @page == 0 ? 'disabled' : '' %>">
+        <%= link_to_if @page > 0, "&larr; Previous".html_safe,
+            customers_path(keywords: @keywords, page: @page - 1) %>
+      </li>
+      <li class="next">
+        <%= link_to "Next &rarr;".html_safe,
+            customers_path(keywords: @keywords, page: @page + 1) %>
+      </li>
+    </ul>
+  </nav>
 </section>
